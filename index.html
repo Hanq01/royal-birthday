@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Royal Birthday Surprise 👑✨</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <!-- Google Fonts: Great Vibes (Royal Script) & Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --royal-pink: #ff6b8b;
+      --soft-pink: #ffeef2;
+      --deep-pink: #d81b60;
+      --gold: #d4af37;
+      --gold-light: #fff3cc;
+      --accent-purple: #9c27b0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 50%, #ffc3a0 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 15px;
+    }
+
+    /* Container Utama Bergaya Bingkai Kerajaan */
+    .royal-card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 4px solid var(--gold);
+      border-radius: 28px;
+      box-shadow: 0 15px 35px rgba(216, 27, 96, 0.25), 0 0 20px rgba(212, 175, 55, 0.4);
+      max-width: 650px;
+      width: 100%;
+      min-height: 520px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+
+    /* Modifikasi Kartu Khusus Slide 4 (Cyber Theme) */
+    .royal-card.cyber-mode {
+      background: #080911;
+      border-color: #00f3ff;
+      box-shadow: inset 0 0 25px rgba(0, 243, 255, 0.3), 0 0 30px rgba(255, 0, 128, 0.5);
+    }
+
+    /* Ornamen Sudut Istana */
+    .royal-corner {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--gold);
+      z-index: 10;
+      pointer-events: none;
+      transition: border-color 0.5s ease;
+    }
+    .royal-card.cyber-mode .royal-corner {
+      border-color: #00f3ff;
+    }
+
+    .corner-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+    .corner-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+    .corner-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+    .corner-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+    /* Pengaturan Slide */
+    .slide {
+      display: none;
+      padding: 35px 25px;
+    }
+    
+    .slide.active {
+      display: block;
+      animation: fadeIn 0.8s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Typography Kerajaan */
+    .royal-title {
+      font-family: 'Great Vibes', cursive;
+      color: var(--deep-pink);
+      font-size: 3.2rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 5px;
+    }
+
+    .royal-subtitle {
+      color: #721c24;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* SLIDE 1: Keypad Passcode */
+    .pin-display {
+      letter-spacing: 8px;
+      font-size: 1.5rem;
+      color: var(--deep-pink);
+      background: var(--soft-pink);
+      border: 2px dashed var(--royal-pink);
+      border-radius: 15px;
+      padding: 10px 15px;
+      margin: 15px auto;
+      max-width: 280px;
+      min-height: 58px;
+    }
+
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .key-btn {
+      background: #ffffff;
+      border: 2px solid #ffccd5;
+      border-radius: 18px;
+      padding: 12px;
+      font-size: 1.2rem;
+      color: var(--deep-pink);
+      box-shadow: 0 4px 10px rgba(255, 107, 139, 0.15);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .key-btn i {
+      font-size: 1.1rem;
+      color: var(--royal-pink);
+      margin-bottom: 2px;
+    }
+    .key-btn:hover {
+      background: var(--soft-pink);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(255, 107, 139, 0.3);
+      border-color: var(--royal-pink);
+    }
+    .key-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* SLIDE 2: Character Interactive */
+    .character-box {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      margin: 20px 0;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .character-box:hover {
+      transform: scale(1.08);
+    }
+
+    .crown-icon {
+      font-size: 2.5rem;
+      color: var(--gold);
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-5deg);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+      animation: crownBounce 2s infinite ease-in-out;
+    }
+
+    @keyframes crownBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); }
+      50% { transform: translateX(-50%) translateY(-6px) rotate(5deg); }
+    }
+
+    .cute-avatar {
+      width: 140px;
+      height: 140px;
+      background: linear-gradient(145deg, #ffe3ec, #ffb6c1);
+      border: 4px solid var(--royal-pink);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      box-shadow: 0 10px 25px rgba(216, 27, 96, 0.2);
+    }
+
+    .cute-avatar i.fa-cat {
+      font-size: 4.8rem;
+      color: #ffffff;
+      filter: drop-shadow(0 4px 6px rgba(216, 27, 96, 0.3));
+    }
+
+    .flower-holding {
+      position: absolute;
+      bottom: 5px;
+      right: 15px;
+      font-size: 2.5rem;
+      color: #ff4081;
+      animation: flowerWiggle 2.5s infinite;
+    }
+
+    @keyframes flowerWiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-12deg); }
+      75% { transform: rotate(12deg); }
+    }
+
+    .tap-hint {
+      display: inline-block;
+      background: var(--gold-light);
+      color: #856404;
+      border: 1px solid var(--gold);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.03); }
+    }
+
+    /* SLIDE 3: Surat Deklarasi Kerajaan */
+    .scroll-paper {
+      background: #fffdf9;
+      border: 2px solid #f3e5ab;
+      border-radius: 15px;
+      padding: 25px;
+      position: relative;
+      box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.15);
+      text-align: left;
+    }
+
+    .scroll-header {
+      text-align: center;
+      border-bottom: 2px stroke var(--gold);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .letter-body {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: #4a4a4a;
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .letter-body::-webkit-scrollbar {
+      width: 5px;
+    }
+    .letter-body::-webkit-scrollbar-thumb {
+      background: var(--royal-pink);
+      border-radius: 10px;
+    }
+
+    .royal-seal {
+      width: 50px;
+      height: 50px;
+      background: var(--deep-pink);
+      color: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 15px auto 0;
+      border: 2px solid var(--gold);
+      font-size: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .royal-seal:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 15px rgba(216, 27, 96, 0.6);
+    }
+
+    /* SLIDE 4: Cyber Style */
+    #slide4.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 440px;
+      padding: 0;
+    }
+
+    .cyber-text {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 11vw, 4.2rem);
+      line-height: 1.1;
+      color: #00f3ff;
+      text-transform: uppercase;
+      text-shadow: 
+        0 0 10px #00f3ff,
+        0 0 20px #00f3ff,
+        0 0 35px #ff007f,
+        0 0 60px #ff007f;
+      letter-spacing: 2px;
+      text-align: center;
+      word-break: break-word;
+      animation: cyberGlow 1.5s infinite alternate;
+    }
+
+    @keyframes cyberGlow {
+      0% {
+        text-shadow: 0 0 10px #00f3ff, 0 0 20px #00f3ff, 0 0 30px #ff007f;
+        transform: scale(0.99);
+      }
+      100% {
+        text-shadow: 0 0 15px #00f3ff, 0 0 30px #00f3ff, 0 0 50px #ff007f, 0 0 70px #ff007f;
+        transform: scale(1.02);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="royal-card text-center" id="royalCard">
+    <!-- Ornaments Hiasan Kerajaan -->
+    <div class="royal-corner corner-tl"></div>
+    <div class="royal-corner corner-tr"></div>
+    <div class="royal-corner corner-bl"></div>
+    <div class="royal-corner corner-br"></div>
+
+    <!-- ================= SLIDE 1: PASSCODE ================= -->
+    <div id="slide1" class="slide active">
+      <div class="mt-2">
+        <i class="fa-solid fa-crown text-warning fs-3 mb-1"></i>
+        <h1 class="royal-title">Gerbang Istana</h1>
+        <p class="royal-subtitle">Masukkan Kode Rahasia Kerajaan</p>
+      </div>
+
+      <div class="pin-display d-flex align-items-center justify-content-center" id="pinDisplay">
+        <span class="text-muted fs-6">PIN...</span>
+      </div>
+
+      <div class="keypad-grid">
+        <button class="key-btn" onclick="pressKey('1')"><i class="fa-solid fa-wand-magic-sparkles"></i>1</button>
+        <button class="key-btn" onclick="pressKey('2')"><i class="fa-solid fa-gem"></i>2</button>
+        <button class="key-btn" onclick="pressKey('3')"><i class="fa-solid fa-cookie"></i>3</button>
+        <button class="key-btn" onclick="pressKey('4')"><i class="fa-solid fa-heart"></i>4</button>
+        <button class="key-btn" onclick="pressKey('5')"><i class="fa-solid fa-star"></i>5</button>
+        <button class="key-btn" onclick="pressKey('6')"><i class="fa-solid fa-cake-candles"></i>6</button>
+        <button class="key-btn" onclick="pressKey('7')"><i class="fa-solid fa-ribbon"></i>7</button>
+        <button class="key-btn" onclick="pressKey('8')"><i class="fa-solid fa-cat"></i>8</button>
+        <button class="key-btn" onclick="pressKey('9')"><i class="fa-solid fa-crown"></i>9</button>
+        <button class="key-btn text-danger" onclick="clearPin()"><i class="fa-solid fa-rotate-left"></i>C</button>
+        <button class="key-btn" onclick="pressKey('0')"><i class="fa-solid fa-gift"></i>0</button>
+        <button class="key-btn text-success" onclick="submitPin()"><i class="fa-solid fa-key"></i>OK</button>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 2: BUKET & IKON ================= -->
+    <div id="slide2" class="slide">
+      <h1 class="royal-title mt-2">Selamat Ulang Tahun!</h1>
+      <p class="royal-subtitle">Yang Mulia Tuan Putri ✨</p>
+
+      <div class="character-box" onclick="goToSlide(3)">
+        <i class="fa-solid fa-crown crown-icon"></i>
+        <div class="cute-avatar">
+          <i class="fa-solid fa-cat"></i>
+        </div>
+        <span class="flower-holding">
+          <i class="fa-solid fa-spa text-danger"></i>
+        </span>
+      </div>
+
+      <div class="my-2">
+        <span class="tap-hint">
+          <i class="fa-solid fa-hand-pointer me-1"></i> selamat ulang tahun sayang aku cinta aku bidadari aku
+        </span>
+      </div>
+
+      <p class="text-muted small mt-3 px-4">
+        "Bunga-bunga di taman istana pun mekar khusus untuk merayakan hari kelahiranmu yang istimewa ini."
+      </p>
+    </div>
+
+    <!-- ================= SLIDE 3: SURAT DEKLARASI ================= -->
+    <div id="slide3" class="slide">
+      <div class="scroll-paper">
+        <div class="scroll-header">
+          <i class="fa-solid fa-scroll text-warning fs-4"></i>
+          <h2 class="royal-title fs-2 m-0">Titah & Deklarasi Kerajaan</h2>
+        </div>
+
+        <div class="letter-body">
+          <p><strong>Salam Sejahtera Bagi Yang Mulia,</strong></p>
+          <p>
+            Diumumkan ke seluruh penjuru negeri, bahwa hari ini adalah hari yang sangat agung! Bertambah satu lagi usia sosok tercantik dan terhebat di dunia ini.
+          </p>
+          <p>
+            Semoga di usiamu yang baru ini, kebahagiaan senantiasa melimpah bagaikan harta karun kerajaan, kesehatanmu selalu terjaga bagaikan benteng yang kokoh, dan setiap impianmu dapat terwujud dengan keajaiban yang tak henti-hentinya.
+          </p>
+          <p>
+            Terima kasih telah menjadi alasan tersenyum bagi orang-orang di sekitarmu. Tetaplah bersinar bagaikan permata terindah di mahkota kerajaan!
+          </p>
+          <p class="text-end fw-bold text-danger mt-3">
+            Hormat ku,<br>
+            <em>Seluruh Penghuni hatimu 👑💖</em>
+          </p>
+        </div>
+
+        <!-- Klik stempel ini untuk menuju Slide 4 -->
+        <div class="royal-seal" title="Klik Stempel Kerajaan" onclick="goToSlide(4)">
+          <i class="fa-solid fa-stamp"></i>
+        </div>
+      </div>
+
+      <button class="btn btn-sm btn-outline-danger mt-3 rounded-pill px-4" onclick="goToSlide(1)">
+        <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Gerbang
+      </button>
+    </div>
+
+    <!-- ================= SLIDE 4: CYBER THEME (COBA LIHAT KELUAR) ================= -->
+    <div id="slide4" class="slide">
+      <div class="cyber-text">
+        COBA<br>LIHAT<br>KELUAR
+      </div>
+      <button class="btn btn-sm btn-outline-info mt-4 rounded-pill px-4 opacity-75" onclick="goToSlide(1)">
+        <i class="fa-solid fa-rotate-left me-1"></i> Ulangi Dari Awal
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Logic JavaScript -->
+  <script>
+    const CORRECT_PIN = "200908"; 
+    let currentPin = "";
+
+    function pressKey(num) {
+      if (currentPin.length < CORRECT_PIN.length) {
+        currentPin += num;
+        updatePinDisplay();
+      }
+    }
+
+    function clearPin() {
+      currentPin = "";
+      updatePinDisplay();
+    }
+
+    function updatePinDisplay() {
+      const display = document.getElementById("pinDisplay");
+      if (currentPin.length === 0) {
+        display.innerHTML = '<span class="text-muted fs-6">PIN...</span>';
+      } else {
+        display.innerText = "🌸".repeat(currentPin.length);
+      }
+    }
+
+    function submitPin() {
+      if (currentPin === CORRECT_PIN) {
+        goToSlide(2);
+        clearPin();
+      } else {
+        alert("👑 Kode Kerajaan Salah! Coba lagi ya.");
+        clearPin();
+      }
+    }
+
+    function goToSlide(slideNumber) {
+      const card = document.getElementById('royalCard');
+
+      // Sembunyikan semua slide
+      document.querySelectorAll('.slide').forEach(slide => {
+        slide.classList.remove('active');
+      });
+
+      // Ubah tampilan bingkai saat masuk ke Slide 4 (Cyber Mode)
+      if (slideNumber === 4) {
+        card.classList.add('cyber-mode');
+      } else {
+        card.classList.remove('cyber-mode');
+      }
+
+      // Tampilkan slide yang dituju
+      document.getElementById(`slide${slideNumber}`).classList.add('active');
+    }
+  </script>
+</body>
+</html>
