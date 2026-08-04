@@ -42,16 +42,16 @@
       top: 20px;
       right: 20px;
       z-index: 999;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.9);
       border: 2px solid var(--gold);
       border-radius: 50%;
-      width: 45px;
-      height: 45px;
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       transition: all 0.3s ease;
     }
     .audio-control:hover {
@@ -365,19 +365,14 @@
 </head>
 <body>
 
-  <!-- Tombol Musik Mengapung -->
-  <div class="audio-control" onclick="toggleAudio()" id="audioBtn" title="Putar / Hentikan Musik">
-    <i class="fa-solid fa-music text-danger fs-5" id="audioIcon"></i>
+  <!-- Tombol Mute/Unmute Musik -->
+  <div class="audio-control" onclick="toggleAudio(event)" id="audioBtn" title="Putar / Hentikan Musik">
+    <i class="fa-solid fa-volume-xmark text-muted fs-5" id="audioIcon"></i>
   </div>
 
-  <!-- Audio Element: Musik Ulang Tahun Kerajaan -->
+  <!-- Audio Element (Looping aktif) -->
   <audio id="bgMusic" loop preload="auto">
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a2a093.mp3?filename=happy-birthday-15330.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- Audio Element: Efek Klik Tombol -->
-  <audio id="clickSound" preload="auto">
-    <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg">
+    <source src="hbd.mp3" type="audio/mpeg">
   </audio>
 
   <div class="royal-card text-center" id="royalCard">
@@ -497,15 +492,23 @@
     const CORRECT_PIN = "200908"; 
     let currentPin = "";
     const bgMusic = document.getElementById("bgMusic");
-    const clickSound = document.getElementById("clickSound");
     let isPlaying = false;
 
-    function playClickSFX() {
-      clickSound.currentTime = 0;
-      clickSound.play().catch(() => {});
+    // Fungsi memutar musik
+    function startMusic() {
+      if (!isPlaying) {
+        bgMusic.play().then(() => {
+          isPlaying = true;
+          document.getElementById("audioIcon").className = "fa-solid fa-music text-danger fs-5";
+        }).catch(e => {
+          console.log("Audio diblokir browser, ketuk tombol musik manual.");
+        });
+      }
     }
 
-    function toggleAudio() {
+    // Toggle manual tombol musik di pojok kanan atas
+    function toggleAudio(event) {
+      if(event) event.stopPropagation();
       const icon = document.getElementById("audioIcon");
       if (isPlaying) {
         bgMusic.pause();
@@ -518,17 +521,7 @@
       }
     }
 
-    function startMusic() {
-      if (!isPlaying) {
-        bgMusic.play().then(() => {
-          isPlaying = true;
-          document.getElementById("audioIcon").className = "fa-solid fa-music text-danger fs-5";
-        }).catch(err => console.log("Audio autostart blocked:", err));
-      }
-    }
-
     function pressKey(num) {
-      playClickSFX();
       if (currentPin.length < CORRECT_PIN.length) {
         currentPin += num;
         updatePinDisplay();
@@ -536,7 +529,6 @@
     }
 
     function clearPin() {
-      playClickSFX();
       currentPin = "";
       updatePinDisplay();
     }
@@ -551,8 +543,8 @@
     }
 
     function submitPin() {
-      playClickSFX();
       if (currentPin === CORRECT_PIN) {
+        // HANYA diputar saat PIN benar
         startMusic();
         goToSlide(2);
         triggerConfetti();
@@ -565,33 +557,28 @@
 
     function triggerConfetti() {
       confetti({
-        particleCount: 100,
-        spread: 70,
+        particleCount: 120,
+        spread: 80,
         origin: { y: 0.6 },
         colors: ['#d4af37', '#ff6b8b', '#ffffff', '#ff4081']
       });
     }
 
     function goToSlide(slideNumber) {
-      playClickSFX();
       const card = document.getElementById('royalCard');
 
-      // Sembunyikan semua slide
       document.querySelectorAll('.slide').forEach(slide => {
         slide.classList.remove('active');
       });
 
-      // Ubah tampilan bingkai saat masuk ke Slide 4 (Cyber Mode)
       if (slideNumber === 4) {
         card.classList.add('cyber-mode');
       } else {
         card.classList.remove('cyber-mode');
       }
 
-      // Tampilkan slide yang dituju
       document.getElementById(`slide${slideNumber}`).classList.add('active');
 
-      // Efek konfeti tambahan saat membuka Slide 2
       if (slideNumber === 2) {
         triggerConfetti();
       }
