@@ -9,8 +9,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <!-- Google Fonts: Great Vibes (Royal Script) & Poppins -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
@@ -34,12 +36,36 @@
       padding: 15px;
     }
 
+    /* Tombol Mute/Unmute Music */
+    .audio-control {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.85);
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+    .audio-control:hover {
+      transform: scale(1.1);
+      background: #ffffff;
+    }
+
     /* Container Utama Bergaya Bingkai Kerajaan */
     .royal-card {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
       border: 4px solid var(--gold);
       border-radius: 28px;
-      box-shadow: 0 15px 35px rgba(216, 27, 96, 0.25), 0 0 20px rgba(212, 175, 55, 0.4);
+      box-shadow: 0 15px 35px rgba(216, 27, 96, 0.25), 0 0 25px rgba(212, 175, 55, 0.4);
       max-width: 650px;
       width: 100%;
       min-height: 520px;
@@ -52,7 +78,7 @@
     .royal-card.cyber-mode {
       background: #080911;
       border-color: #00f3ff;
-      box-shadow: inset 0 0 25px rgba(0, 243, 255, 0.3), 0 0 30px rgba(255, 0, 128, 0.5);
+      box-shadow: inset 0 0 25px rgba(0, 243, 255, 0.3), 0 0 35px rgba(255, 0, 128, 0.6);
     }
 
     /* Ornamen Sudut Istana */
@@ -82,11 +108,11 @@
     
     .slide.active {
       display: block;
-      animation: fadeIn 0.8s ease-in-out forwards;
+      animation: fadeIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
@@ -94,7 +120,7 @@
     .royal-title {
       font-family: 'Great Vibes', cursive;
       color: var(--deep-pink);
-      font-size: 3.2rem;
+      font-size: 3.4rem;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
       margin-bottom: 5px;
     }
@@ -119,6 +145,7 @@
       margin: 15px auto;
       max-width: 280px;
       min-height: 58px;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
     }
 
     .keypad-grid {
@@ -135,6 +162,7 @@
       border-radius: 18px;
       padding: 12px;
       font-size: 1.2rem;
+      font-weight: 600;
       color: var(--deep-pink);
       box-shadow: 0 4px 10px rgba(255, 107, 139, 0.15);
       transition: all 0.2s ease;
@@ -145,7 +173,7 @@
       justify-content: center;
     }
     .key-btn i {
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--royal-pink);
       margin-bottom: 2px;
     }
@@ -172,19 +200,19 @@
     }
 
     .crown-icon {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       color: var(--gold);
       position: absolute;
-      top: -28px;
+      top: -30px;
       left: 50%;
       transform: translateX(-50%) rotate(-5deg);
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
       animation: crownBounce 2s infinite ease-in-out;
     }
 
     @keyframes crownBounce {
       0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); }
-      50% { transform: translateX(-50%) translateY(-6px) rotate(5deg); }
+      50% { transform: translateX(-50%) translateY(-8px) rotate(5deg); }
     }
 
     .cute-avatar {
@@ -197,7 +225,7 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto;
-      box-shadow: 0 10px 25px rgba(216, 27, 96, 0.2);
+      box-shadow: 0 10px 25px rgba(216, 27, 96, 0.25);
     }
 
     .cute-avatar i.fa-cat {
@@ -226,16 +254,17 @@
       background: var(--gold-light);
       color: #856404;
       border: 1px solid var(--gold);
-      padding: 6px 16px;
+      padding: 8px 18px;
       border-radius: 20px;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       font-weight: 600;
       animation: pulse 1.5s infinite;
+      box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.85; transform: scale(1.03); }
+      50% { opacity: 0.88; transform: scale(1.03); }
     }
 
     /* SLIDE 3: Surat Deklarasi Kerajaan */
@@ -251,7 +280,7 @@
 
     .scroll-header {
       text-align: center;
-      border-bottom: 2px stroke var(--gold);
+      border-bottom: 2px dashed var(--gold);
       padding-bottom: 10px;
       margin-bottom: 15px;
     }
@@ -274,8 +303,8 @@
     }
 
     .royal-seal {
-      width: 50px;
-      height: 50px;
+      width: 55px;
+      height: 55px;
       background: var(--deep-pink);
       color: var(--gold);
       border-radius: 50%;
@@ -284,14 +313,14 @@
       justify-content: center;
       margin: 15px auto 0;
       border: 2px solid var(--gold);
-      font-size: 1.2rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      font-size: 1.3rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       cursor: pointer;
       transition: all 0.3s ease;
     }
     .royal-seal:hover {
-      transform: scale(1.15);
-      box-shadow: 0 0 15px rgba(216, 27, 96, 0.6);
+      transform: scale(1.15) rotate(10deg);
+      box-shadow: 0 0 20px rgba(216, 27, 96, 0.7);
     }
 
     /* SLIDE 4: Cyber Style */
@@ -336,6 +365,21 @@
 </head>
 <body>
 
+  <!-- Tombol Musik Mengapung -->
+  <div class="audio-control" onclick="toggleAudio()" id="audioBtn" title="Putar / Hentikan Musik">
+    <i class="fa-solid fa-music text-danger fs-5" id="audioIcon"></i>
+  </div>
+
+  <!-- Audio Element: Musik Ulang Tahun Kerajaan -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a2a093.mp3?filename=happy-birthday-15330.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Audio Element: Efek Klik Tombol -->
+  <audio id="clickSound" preload="auto">
+    <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="royal-card text-center" id="royalCard">
     <!-- Ornaments Hiasan Kerajaan -->
     <div class="royal-corner corner-tl"></div>
@@ -374,7 +418,7 @@
     <!-- ================= SLIDE 2: BUKET & IKON ================= -->
     <div id="slide2" class="slide">
       <h1 class="royal-title mt-2">Selamat Ulang Tahun!</h1>
-      <p class="royal-subtitle">Yang Mulia Tuan Putri zefanya debora ✨</p>
+      <p class="royal-subtitle">Yang Mulia Tuan Putri Zefanya Debora Deyja ✨</p>
 
       <div class="character-box" onclick="goToSlide(3)">
         <i class="fa-solid fa-crown crown-icon"></i>
@@ -387,13 +431,13 @@
       </div>
 
       <div class="my-2">
-        <span class="tap-hint">
-          <i class="fa-solid fa-hand-pointer me-1"></i> selamat ulang tahun sayang aku cinta aku bidadari aku
+        <span class="tap-hint" onclick="goToSlide(3)">
+          <i class="fa-solid fa-hand-pointer me-1"></i> Selamat ulang tahun sayang aku cinta aku bidadari aku
         </span>
       </div>
 
       <p class="text-muted small mt-3 px-4">
-        "Bunga-bunga di taman istana pun mekar khusus untuk merayakan hari kelahiranmu yang istimewa ini."
+        "Bunga-bunga di taman istana pun mekar khusus untuk merayakan hari kelahiranmu yang sangat istimewa ini."
       </p>
     </div>
 
@@ -452,8 +496,39 @@
   <script>
     const CORRECT_PIN = "200908"; 
     let currentPin = "";
+    const bgMusic = document.getElementById("bgMusic");
+    const clickSound = document.getElementById("clickSound");
+    let isPlaying = false;
+
+    function playClickSFX() {
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+    }
+
+    function toggleAudio() {
+      const icon = document.getElementById("audioIcon");
+      if (isPlaying) {
+        bgMusic.pause();
+        icon.className = "fa-solid fa-volume-xmark text-muted fs-5";
+        isPlaying = false;
+      } else {
+        bgMusic.play();
+        icon.className = "fa-solid fa-music text-danger fs-5";
+        isPlaying = true;
+      }
+    }
+
+    function startMusic() {
+      if (!isPlaying) {
+        bgMusic.play().then(() => {
+          isPlaying = true;
+          document.getElementById("audioIcon").className = "fa-solid fa-music text-danger fs-5";
+        }).catch(err => console.log("Audio autostart blocked:", err));
+      }
+    }
 
     function pressKey(num) {
+      playClickSFX();
       if (currentPin.length < CORRECT_PIN.length) {
         currentPin += num;
         updatePinDisplay();
@@ -461,6 +536,7 @@
     }
 
     function clearPin() {
+      playClickSFX();
       currentPin = "";
       updatePinDisplay();
     }
@@ -475,8 +551,11 @@
     }
 
     function submitPin() {
+      playClickSFX();
       if (currentPin === CORRECT_PIN) {
+        startMusic();
         goToSlide(2);
+        triggerConfetti();
         clearPin();
       } else {
         alert("👑 Kode Kerajaan Salah! Coba lagi ya.");
@@ -484,7 +563,17 @@
       }
     }
 
+    function triggerConfetti() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#d4af37', '#ff6b8b', '#ffffff', '#ff4081']
+      });
+    }
+
     function goToSlide(slideNumber) {
+      playClickSFX();
       const card = document.getElementById('royalCard');
 
       // Sembunyikan semua slide
@@ -501,6 +590,11 @@
 
       // Tampilkan slide yang dituju
       document.getElementById(`slide${slideNumber}`).classList.add('active');
+
+      // Efek konfeti tambahan saat membuka Slide 2
+      if (slideNumber === 2) {
+        triggerConfetti();
+      }
     }
   </script>
 </body>
